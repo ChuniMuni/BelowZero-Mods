@@ -1,9 +1,9 @@
 ﻿using SMLHelper.V2.Assets;
-using SMLHelper.V2.Crafting;
 using SMLHelper.V2.Handlers;
 using SMLHelper.V2.Utility;
 using System.Collections.Generic;
 using UnityEngine;
+using SMLHelper.V2.Crafting;
 
 namespace BuilderModule
 {

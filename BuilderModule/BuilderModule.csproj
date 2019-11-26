@@ -68,6 +68,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SeaTruckBuilderModule.cs" />
+    <Compile Include="SeaTruckBuilderModulePrefab.cs" />
     <Compile Include="Craftable.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="BuilderModule.cs" />

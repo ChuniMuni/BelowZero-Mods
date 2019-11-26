@@ -28,7 +28,7 @@ namespace BuilderModuleInputFix
         [HarmonyPrefix]
         static bool Prefix()
         {
-            if (Player.main.GetVehicle() != null)
+            if (Player.main.IsPiloting())
             {
                 Builder.Initialize();
                 Builder.canPlace = false;
@@ -99,7 +99,7 @@ namespace BuilderModuleInputFix
                             return true;
                         }
                     }
-                    else
+                    else if(thisVehicle.GetType().Equals(typeof(SeaMoth)))
                     {
                         var seamoth = (SeaMoth)thisVehicle;
                         bool storageCheck = false;
@@ -183,7 +183,7 @@ namespace BuilderModuleInputFix
                             return true;
                         }
                     }
-                    else
+                    else if(thisVehicle.GetType().Equals(typeof(SeaMoth)))
                     {
                         var seamoth = (SeaMoth)thisVehicle;
                         bool storageCheck = false;
@@ -211,6 +211,11 @@ namespace BuilderModuleInputFix
                             __instance.constructedAmount = backupConstructedAmount;
                             return true;
                         }
+                    }
+                    else
+                    {
+                        __instance.constructedAmount = backupConstructedAmount;
+                        return true;
                     }
                 }
                 __instance.UpdateMaterial();
