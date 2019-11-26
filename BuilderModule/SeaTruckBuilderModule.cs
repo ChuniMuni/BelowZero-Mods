@@ -70,7 +70,6 @@ namespace BuilderModule
 
         private void toggleBuilder()
         {
-            ErrorMessage.AddMessage("Builder Module Toggle");
             if (thisVehicle.modules.GetCount(SeatruckBuilderModulePrefab.TechTypeID) > 0)
             {
                 lastToggled = 30;
@@ -90,8 +89,16 @@ namespace BuilderModule
 
         public bool OnEnable()
         {
-            isActive = playerMain.isPiloting && isToggle && playerMain.GetVehicle().modules.GetCount(SeatruckBuilderModulePrefab.TechTypeID) > 0;
-            return isActive;
+            isActive = isToggle && thisVehicle.modules.GetCount(SeatruckBuilderModulePrefab.TechTypeID) > 0;
+            if (isActive)
+            {
+                return isActive;
+            }
+            else
+            {
+                isToggle = false;
+                return isActive;
+            }
         }
 
         public void OnDisable()
@@ -146,7 +153,7 @@ namespace BuilderModule
                     this.HandleInput();
                 }
             }
-            if(lastToggled <=0 && GameInput.GetButtonHeld(GameInput.Button.Reload) && playerMain.isPiloting && thisVehicle.modules.GetCount(SeatruckBuilderModulePrefab.TechTypeID) > 0)
+            if(lastToggled <=0 && GameInput.GetButtonHeld(GameInput.Button.Reload) && playerMain.GetComponentInParent<SeaTruckUpgrades>() == thisVehicle)
             {
                 toggleBuilder();
             }
