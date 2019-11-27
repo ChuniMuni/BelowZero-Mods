@@ -69,10 +69,10 @@ namespace BuilderModuleInputFix
         [HarmonyPrefix]
         static bool Prefix(Constructable __instance)
         {
-            if (Player.main.GetVehicle() != null || Player.main.GetComponentInParent<SeaTruckUpgrades>() !=null)
+            if (Player.main.GetVehicle() != null || Player.main.GetComponentInParent<SeaTruckSegment>() !=null)
             {
                 var thisVehicle = Player.main.GetVehicle();
-                var thisSeatruck = Player.main.GetComponentInParent<SeaTruckUpgrades>();
+                var thisSeatruck = Player.main.GetComponentInParent<SeaTruckSegment>();
 
                 if (__instance._constructed)
                 {
@@ -86,6 +86,7 @@ namespace BuilderModuleInputFix
                 int resourceID2 = __instance.GetResourceID();
                 if (resourceID2 != resourceID)
                 {
+                    bool storageCheck = false;
                     TechType destroyTechType = __instance.resourceMap[resourceID2 - 1];
                     if (thisVehicle != null)
                     {
@@ -96,40 +97,37 @@ namespace BuilderModuleInputFix
                             if (storageContainer.container.Contains(destroyTechType) && GameModeUtils.RequiresIngredients())
                             {
                                 storageContainer.container.DestroyItem(destroyTechType);
+                                storageCheck = true;
                             }
-                            else
-                            {
-                                __instance.constructedAmount = backupConstructedAmount;
-                                return true;
-                            }
-                        }
-                        else
-                        {
-                            __instance.constructedAmount = backupConstructedAmount;
-                            return true;
                         }
                     }
                     else if(thisSeatruck != null)
                     {
-                        StorageContainer[] containers = thisSeatruck.GetComponents<StorageContainer>();
-
-                        bool storageCheck = false;
-                        foreach (StorageContainer storageContainer in containers)
+                        SeaTruckSegment[] seaTruckSegments = thisSeatruck.GetComponents<SeaTruckSegment>();
+                        List<StorageContainer[]> containers = new List<StorageContainer[]>();
+                        foreach (SeaTruckSegment seaTruckSegment in seaTruckSegments)
                         {
-                            if (storageContainer.container.Contains(destroyTechType) && GameModeUtils.RequiresIngredients())
+                            containers.Add(seaTruckSegment.GetComponentsInChildren<StorageContainer>());
+                        }
+                        foreach (StorageContainer[] storageContainers in containers)
+                        {
+                            foreach (StorageContainer storageContainer in storageContainers)
                             {
-                                storageContainer.container.DestroyItem(destroyTechType); 
-                                storageCheck = true;
-                                break;
+                                if (storageContainer.container.Contains(destroyTechType) && GameModeUtils.RequiresIngredients())
+                                {
+                                    storageContainer.container.DestroyItem(destroyTechType);
+                                    storageCheck = true;
+                                    break;
+                                }
                             }
                         }
-                        if (!storageCheck)
-                        {
-                            __instance.constructedAmount = backupConstructedAmount;
-                            return true;
-                        }
                     }
-                    
+                    if (!storageCheck)
+                    {
+                        __instance.constructedAmount = backupConstructedAmount;
+                        return true;
+                    }
+
                 }
                 __instance.UpdateMaterial();
                 if (__instance.constructedAmount >= 1f)
@@ -152,11 +150,10 @@ namespace BuilderModuleInputFix
         [HarmonyPrefix]
         static bool Prefix(Constructable __instance)
         {
-            if (Player.main.GetVehicle() != null || Player.main.GetComponentInParent<SeaTruckUpgrades>() != null)
+            if (Player.main.GetVehicle() != null || Player.main.GetComponentInParent<SeaTruckSegment>() != null)
             {
                 var thisVehicle = Player.main.GetVehicle();
-                var thisSeatruck = Player.main.GetComponentInParent<SeaTruckUpgrades>();
-
+                var thisSeatruck = Player.main.GetComponentInParent<SeaTruckSegment>();
                 if (__instance._constructed)
                 {
                     return true;
@@ -169,6 +166,7 @@ namespace BuilderModuleInputFix
                 int resourceID2 = __instance.GetResourceID();
                 if (resourceID2 != resourceID && GameModeUtils.RequiresIngredients())
                 {
+                    bool storageCheck = false;
                     TechType techType = __instance.resourceMap[resourceID2];
                     GameObject gameObject = CraftData.InstantiateFromPrefab(techType, false);
                     Pickupable component = gameObject.GetComponent<Pickupable>();
@@ -191,40 +189,37 @@ namespace BuilderModuleInputFix
                                 var item = new InventoryItem(component);
                                 storageContainer.container.UnsafeAdd(item);
                                 component.PlayPickupSound();
+                                storageCheck = true;
                             }
-                            else
-                            {
-                                __instance.constructedAmount = backupConstructedAmount;
-                                return true;
-                            }
-                        }
-                        else
-                        {
-                            __instance.constructedAmount = backupConstructedAmount;
-                            return true;
                         }
                     }
-                    else if (thisSeatruck != null)
+                    else
                     {
-                        StorageContainer[] containers = thisSeatruck.GetComponents<StorageContainer>();
-
-                        bool storageCheck = false;
-                        foreach (StorageContainer storageContainer in containers)
+                        SeaTruckSegment[] seaTruckSegments = thisSeatruck.GetComponents<SeaTruckSegment>();
+                        List<StorageContainer[]> containers = new List<StorageContainer[]>();
+                        foreach (SeaTruckSegment seaTruckSegment in seaTruckSegments)
                         {
-                            if (storageContainer.container.HasRoomFor(component) && GameModeUtils.RequiresIngredients())
+                            containers.Add(seaTruckSegment.GetComponentsInChildren<StorageContainer>());
+                        }
+                        foreach (StorageContainer[] storageContainers in containers)
+                        {
+                            foreach (StorageContainer storageContainer in storageContainers)
                             {
-                                var name = Language.main.Get(component.GetTechName());
-                                ErrorMessage.AddMessage(Language.main.GetFormat("VehicleAddedToStorage", name));
+                                if (storageContainer.container.HasRoomFor(component) && GameModeUtils.RequiresIngredients())
+                                {
+                                    var name = Language.main.Get(component.GetTechName());
+                                    ErrorMessage.AddMessage(Language.main.GetFormat("VehicleAddedToStorage", name));
 
-                                uGUI_IconNotifier.main.Play(component.GetTechType(), uGUI_IconNotifier.AnimationType.From, null);
+                                    uGUI_IconNotifier.main.Play(component.GetTechType(), uGUI_IconNotifier.AnimationType.From, null);
 
-                                component.Initialize();
+                                    component.Initialize();
 
-                                var item = new InventoryItem(component);
-                                storageContainer.container.UnsafeAdd(item);
-                                component.PlayPickupSound();
-                                storageCheck = true;
-                                break;
+                                    var item = new InventoryItem(component);
+                                    storageContainer.container.UnsafeAdd(item);
+                                    component.PlayPickupSound();
+                                    storageCheck = true;
+                                    break;
+                                }
                             }
                         }
                         if (!storageCheck)

@@ -103,6 +103,7 @@ namespace BuilderModule
 
         public void OnDisable()
         {
+            isToggle = false;
             isActive = false;
             uGUI_BuilderMenu.Hide();
             Builder.End();
@@ -111,6 +112,10 @@ namespace BuilderModule
 
         private void Update()
         {
+            if (!Player.main.IsPiloting())
+            {
+                OnDisable();
+            }
             lastToggled--;
             if (OnEnable())
             {
