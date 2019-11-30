@@ -146,7 +146,7 @@ namespace BuilderModule
                         }
                     }
                     else if (this.handleInputFrame != Time.frameCount && GameInput.GetButtonDown(GameInput.Button.Deconstruct))
-                    {   
+                    {
                         Builder.End();
                     }
                     FPSInputModule.current.EscapeMenu();
@@ -158,7 +158,7 @@ namespace BuilderModule
                     this.HandleInput();
                 }
             }
-            if(lastToggled <=0 && GameInput.GetButtonHeld(GameInput.Button.Reload) && playerMain.GetComponentInParent<SeaTruckUpgrades>() == thisVehicle)
+            if (lastToggled <= 0 && GameInput.GetButtonHeld(GameInput.Button.Reload) && playerMain.GetComponentInParent<SeaTruckUpgrades>() == thisVehicle)
             {
                 toggleBuilder();
             }
@@ -192,8 +192,9 @@ namespace BuilderModule
             bool buttonHeld = GameInput.GetButtonHeld(GameInput.Button.AltTool);
             bool buttonDown = GameInput.GetButtonDown(GameInput.Button.Deconstruct);
             bool buttonHeld2 = GameInput.GetButtonHeld(GameInput.Button.Deconstruct);
+            bool quickbuild = GameInput.GetButtonHeld(GameInput.Button.Sprint);
             Constructable constructable = gameObject.GetComponentInParent<Constructable>();
-            if (constructable != null && num > constructable.placeMaxDistance*4)
+            if (constructable != null && num > constructable.placeMaxDistance * 4)
             {
                 constructable = null;
             }
@@ -204,9 +205,12 @@ namespace BuilderModule
                 if (buttonHeld)
                 {
                     this.Construct(constructable, true);
-                    this.Construct(constructable, true);
-                    this.Construct(constructable, true);
-                    this.Construct(constructable, true);
+                    if (quickbuild)
+                    {
+                        this.Construct(constructable, true);
+                        this.Construct(constructable, true);
+                        this.Construct(constructable, true);
+                    }
                 }
                 else if (constructable.DeconstructionAllowed(out text))
                 {
@@ -219,9 +223,12 @@ namespace BuilderModule
                         else
                         {
                             this.Construct(constructable, false);
-                            this.Construct(constructable, false);
-                            this.Construct(constructable, false);
-                            this.Construct(constructable, false);
+                            if (quickbuild)
+                            {
+                                this.Construct(constructable, false);
+                                this.Construct(constructable, false);
+                                this.Construct(constructable, false);
+                            }
                         }
                     }
                 }
@@ -250,6 +257,12 @@ namespace BuilderModule
                         if (buttonDown)
                         {
                             baseDeconstructable.Deconstruct();
+                            if (quickbuild)
+                            {
+                                baseDeconstructable.Deconstruct();
+                                baseDeconstructable.Deconstruct();
+                                baseDeconstructable.Deconstruct();
+                            }
                         }
                     }
                     else if (buttonDown && !string.IsNullOrEmpty(text))
@@ -265,7 +278,7 @@ namespace BuilderModule
             if (this.energyMixin.GetPower() <= 0f)
             {
                 HandReticle main = HandReticle.main;
-                main.SetText(HandReticle.TextType.Hand ,this.noPowerText, false);
+                main.SetText(HandReticle.TextType.Hand, this.noPowerText, false);
                 main.SetIcon(HandReticle.IconType.Default, 1f);
                 return true;
             }
@@ -351,7 +364,7 @@ namespace BuilderModule
             isToggle = false;
             thisVehicle.modules.onEquip -= OnAddItem;
             thisVehicle.modules.onUnequip -= OnRemoveItem;
-        } 
+        }
     }
 }
 

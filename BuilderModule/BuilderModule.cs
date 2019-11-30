@@ -174,6 +174,7 @@ namespace BuilderModule
             bool buttonHeld = GameInput.GetButtonHeld(GameInput.Button.AltTool);
             bool buttonDown = GameInput.GetButtonDown(GameInput.Button.Deconstruct);
             bool buttonHeld2 = GameInput.GetButtonHeld(GameInput.Button.Deconstruct);
+            bool quickbuild = GameInput.GetButtonHeld(GameInput.Button.Sprint);
             Constructable constructable = gameObject.GetComponentInParent<Constructable>();
             if (constructable != null && num > constructable.placeMaxDistance*4)
             {
@@ -186,9 +187,12 @@ namespace BuilderModule
                 if (buttonHeld)
                 {
                     this.Construct(constructable, true);
-                    this.Construct(constructable, true);
-                    this.Construct(constructable, true);
-                    this.Construct(constructable, true);
+                    if (quickbuild)
+                    {
+                        this.Construct(constructable, true);
+                        this.Construct(constructable, true);
+                        this.Construct(constructable, true);
+                    }
                 }
                 else if (constructable.DeconstructionAllowed(out text))
                 {
@@ -201,9 +205,12 @@ namespace BuilderModule
                         else
                         {
                             this.Construct(constructable, false);
-                            this.Construct(constructable, false);
-                            this.Construct(constructable, false);
-                            this.Construct(constructable, false);
+                            if (quickbuild)
+                            {
+                                this.Construct(constructable, false);
+                                this.Construct(constructable, false);
+                                this.Construct(constructable, false);
+                            }
                         }
                     }
                 }
@@ -232,6 +239,12 @@ namespace BuilderModule
                         if (buttonDown)
                         {
                             baseDeconstructable.Deconstruct();
+                            if (quickbuild)
+                            {
+                                baseDeconstructable.Deconstruct();
+                                baseDeconstructable.Deconstruct();
+                                baseDeconstructable.Deconstruct();
+                            }
                         }
                     }
                     else if (buttonDown && !string.IsNullOrEmpty(text))
