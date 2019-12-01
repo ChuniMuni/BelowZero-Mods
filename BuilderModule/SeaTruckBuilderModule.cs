@@ -103,16 +103,19 @@ namespace BuilderModule
 
         public void OnDisable()
         {
+            if (isToggle)
+            {
+                uGUI_BuilderMenu.Hide();
+                Builder.End();
+            }
             isToggle = false;
             isActive = false;
-            uGUI_BuilderMenu.Hide();
-            Builder.End();
         }
 
 
         private void Update()
         {
-            if (!Player.main.IsPiloting())
+            if (!playerMain.GetComponentInParent<SeaTruckUpgrades>() != thisVehicle)
             {
                 OnDisable();
             }
