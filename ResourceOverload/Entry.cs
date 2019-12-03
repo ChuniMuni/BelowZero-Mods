@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using Harmony;
 using SMLHelper.V2.Handlers;
 using SMLHelper.V2.Options;
@@ -11,10 +12,16 @@ namespace ResourceOverload
     {
         public static void Patch()
         {
-            var harmony = HarmonyInstance.Create("MrPurple6411.ResourceOverload");
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
-            Config.Load();
-            OptionsPanelHandler.RegisterModOptions(new Options());
+            try
+            {
+                HarmonyInstance.Create("MrPurple6411.ResourceOverload").PatchAll(Assembly.GetExecutingAssembly());
+                Config.Load();
+                OptionsPanelHandler.RegisterModOptions(new Options());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
     }
     public static class Config

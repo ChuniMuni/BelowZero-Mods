@@ -13,10 +13,10 @@ namespace Time_Eternal
     {
         public static void Load()
         {
-            Config.Load();
-            OptionsPanelHandler.RegisterModOptions(new Options());
             try
             {
+                Config.Load();
+                OptionsPanelHandler.RegisterModOptions(new Options());
                 HarmonyInstance.Create("MrPurple6411.Eternal_Sunshine").PatchAll(Assembly.GetExecutingAssembly());
             }
             catch (Exception ex)
