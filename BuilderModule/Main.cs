@@ -50,6 +50,7 @@ namespace BuilderModule
             if (techType == SeatruckBuilderModulePrefab.TechTypeID && added)
             {
                 var control = __instance.gameObject.GetOrAddComponent<SeaTruckBuilderModule>();
+                control.moduleSlotID = slotID+1;
                 return;
             }
         }

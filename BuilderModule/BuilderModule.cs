@@ -43,16 +43,16 @@ namespace BuilderModule
 
         private void Start()
         {
-            thisVehicle.onToggle += OnToggle;
-            thisVehicle.modules.onAddItem += OnAddItem;
-            thisVehicle.modules.onRemoveItem += OnRemoveItem;
+            thisVehicle.onToggle += this.OnToggle;
+            thisVehicle.modules.onAddItem += this.OnAddItem;
+            thisVehicle.modules.onRemoveItem += this.OnRemoveItem;
         }
 
         private void OnRemoveItem(InventoryItem item)
         {
             if (item.item.GetTechType() == BuilderModulePrefab.TechTypeID)
-            {                
-                moduleSlotID = -1;
+            {
+                this.moduleSlotID = -1;
                 Instance.enabled = false;
                 OnDisable();
             }
@@ -62,8 +62,8 @@ namespace BuilderModule
         {
             if (item.item.GetTechType() == BuilderModulePrefab.TechTypeID)
             {
-                moduleSlotID = thisVehicle.GetSlotByItem(item);
-                ErrorMessage.AddMessage("Builder Module installed in Slot: " + moduleSlotID);
+                this.moduleSlotID = thisVehicle.GetSlotByItem(item);
+                ErrorMessage.AddMessage("Builder Module installed in Slot: " + (this.moduleSlotID - 1));
                 Instance.enabled = true;
                 OnEnable();
             }
@@ -73,9 +73,9 @@ namespace BuilderModule
         {
             if (thisVehicle.GetSlotBinding(slotID) == BuilderModulePrefab.TechTypeID)
             {
-                isToggle = state;
+                this.isToggle = state;
 
-                if (isToggle)
+                if (this.isToggle)
                 {
                     ErrorMessage.AddMessage("Builder Module Enabled");
                     OnEnable();
@@ -90,12 +90,12 @@ namespace BuilderModule
 
         public void OnEnable()
         {
-            isActive = playerMain.isPiloting && isToggle && moduleSlotID > -1;
+            this.isActive = playerMain.isPiloting && this.isToggle && this.moduleSlotID > -1;
         }
 
         public void OnDisable()
         {
-            isActive = false;
+            this.isActive = false;
             uGUI_BuilderMenu.Hide();
             Builder.End();
         }
@@ -103,14 +103,9 @@ namespace BuilderModule
 
         private void Update()
         {
-            this.UpdateText();
-            if (isActive)
+
+            if (this.isActive)
             {
-                if (thisVehicle.GetActiveSlotID() != moduleSlotID)
-                {
-                    thisVehicle.SlotKeyDown(thisVehicle.GetActiveSlotID());
-                    thisVehicle.SlotKeyUp(thisVehicle.GetActiveSlotID());
-                }
                 if (GameInput.GetButtonDown(GameInput.Button.PDA) && !Player.main.GetPDA().isOpen && !Builder.isPlacing)
                 {
                     if (energyMixin.charge > 0f)
@@ -142,6 +137,7 @@ namespace BuilderModule
                 }
                 if (!uGUI_BuilderMenu.IsOpen() && !Builder.isPlacing)
                 {
+                    this.UpdateText();
                     this.HandleInput();
                 }
             }
@@ -298,7 +294,7 @@ namespace BuilderModule
 
         private void OnHover(Constructable constructable)
         {
-            if (isActive)
+            if (this.isActive)
             {
                 HandReticle main = HandReticle.main;
                 if (constructable.constructed)
@@ -332,7 +328,7 @@ namespace BuilderModule
 
         private void OnHover(BaseDeconstructable deconstructable)
         {
-            if (isActive)
+            if (this.isActive)
             {
                 HandReticle main = HandReticle.main;
                 main.SetText(HandReticle.TextType.Hand, this.deconstructText, false);

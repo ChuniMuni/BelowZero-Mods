@@ -16,6 +16,7 @@ namespace BuilderModule
         private bool isToggle;
         private bool isActive;
         int lastToggled = 0;
+        public int moduleSlotID = -1;
         public float powerConsumptionConstruct = 0.5f;
         public float powerConsumptionDeconstruct = 0.5f;
         public FMOD_CustomLoopingEmitter buildSound;
@@ -51,6 +52,7 @@ namespace BuilderModule
             if (CraftData.GetTechType(item.item.gameObject) == SeatruckBuilderModulePrefab.TechTypeID)
             {
                 Instance.enabled = false;
+                moduleSlotID = -1;
                 OnDisable();
             }
         }
@@ -59,39 +61,21 @@ namespace BuilderModule
         {
             if (thisVehicle.modules.GetTechTypeInSlot(slot) == SeatruckBuilderModulePrefab.TechTypeID)
             {
-                int x = -1;
-                int.TryParse(slot.Replace("SeaTruckModule", ""), out x);
-                int moduleSlotID = x;
+                int.TryParse(slot.Replace("SeaTruckModule", ""), out moduleSlotID);
                 ErrorMessage.AddMessage("Builder Module installed in Slot: " + moduleSlotID);
                 Instance.enabled = true;
                 OnEnable();
             }
         }
 
-        private void toggleBuilder()
-        {
-            if (thisVehicle.modules.GetCount(SeatruckBuilderModulePrefab.TechTypeID) > 0)
-            {
-                lastToggled = 30;
-                isToggle = !isToggle;
-                if (isToggle)
-                {
-                    ErrorMessage.AddMessage("Builder Module Enabled");
-                    OnEnable();
-                }
-                else
-                {
-                    ErrorMessage.AddMessage("Builder Module Disabled");
-                    OnDisable();
-                }
-            }
-        }
-
         public bool OnEnable()
         {
+            isToggle = true;
             isActive = isToggle && thisVehicle.modules.GetCount(SeatruckBuilderModulePrefab.TechTypeID) > 0;
             if (isActive)
             {
+                ErrorMessage.AddMessage("Builder Module Enabled");
+                lastToggled = 30;
                 return isActive;
             }
             else
@@ -103,24 +87,23 @@ namespace BuilderModule
 
         public void OnDisable()
         {
-            if (isToggle)
-            {
-                uGUI_BuilderMenu.Hide();
-                Builder.End();
-            }
+            ErrorMessage.AddMessage("Builder Module Disabled");
+            uGUI_BuilderMenu.Hide();
+            Builder.End();
             isToggle = false;
-            isActive = false;
+            isActive = false; 
+            lastToggled = 30;
         }
 
 
         private void Update()
         {
-            if (!playerMain.GetComponentInParent<SeaTruckUpgrades>() != thisVehicle)
+            if (playerMain.GetComponentInParent<SeaTruckUpgrades>() != thisVehicle && this.isToggle)
             {
                 OnDisable();
             }
             lastToggled--;
-            if (OnEnable())
+            if (isActive)
             {
                 if (GameInput.GetButtonDown(GameInput.Button.PDA) && !Player.main.GetPDA().isOpen && !Builder.isPlacing)
                 {
@@ -161,9 +144,19 @@ namespace BuilderModule
                     this.HandleInput();
                 }
             }
-            if (lastToggled <= 0 && GameInput.GetButtonHeld(GameInput.Button.Reload) && playerMain.GetComponentInParent<SeaTruckUpgrades>() == thisVehicle)
+            if (moduleSlotID > -1)
             {
-                toggleBuilder();
+                if (lastToggled <= 0 && Player.main.GetQuickSlotKeyHeld(moduleSlotID-1) && playerMain.GetComponentInParent<SeaTruckUpgrades>() == thisVehicle)
+                {
+                    if (isToggle)
+                    {
+                        OnDisable();
+                    }
+                    else
+                    {
+                        OnEnable();
+                    }
+                }
             }
         }
 
