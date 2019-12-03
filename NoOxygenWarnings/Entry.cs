@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using Harmony;
 
 namespace NoOxygenWarnings
@@ -7,8 +8,14 @@ namespace NoOxygenWarnings
 	{
         public static void Patch()
         {
-            var harmony = HarmonyInstance.Create("MrPurple6411.NoOxygenWarnings");
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            try
+            {
+                HarmonyInstance.Create("MrPurple6411.NoOxygenWarnings").PatchAll(Assembly.GetExecutingAssembly());
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
     }
 }
