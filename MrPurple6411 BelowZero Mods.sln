@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuilderModule", "BuilderMod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuilderModuleInputFix", "BuilderModuleInputFix\BuilderModuleInputFix.csproj", "{B7142774-ABD2-4615-979E-4E31F183314D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToggleModuleTemplate", "ToggleModuleTemplate\ToggleModuleTemplate.csproj", "{34F51A9E-A24A-44DE-A0EB-D316C0D6CCBE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{B7142774-ABD2-4615-979E-4E31F183314D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7142774-ABD2-4615-979E-4E31F183314D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7142774-ABD2-4615-979E-4E31F183314D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34F51A9E-A24A-44DE-A0EB-D316C0D6CCBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34F51A9E-A24A-44DE-A0EB-D316C0D6CCBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34F51A9E-A24A-44DE-A0EB-D316C0D6CCBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34F51A9E-A24A-44DE-A0EB-D316C0D6CCBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
