@@ -53,12 +53,10 @@ namespace BuilderModuleInputFix
                 }
                 Builder.ghostStructureMaterial.SetColor(ShaderPropertyID._Tint, value);
 
-                ErrorMessage.AddMessage("in vehicle");
                 return false;
             }
             else
             {
-                ErrorMessage.AddMessage("not in vehicle");
                 return true;
             }
         }
@@ -136,12 +134,10 @@ namespace BuilderModuleInputFix
                 {
                     __instance.SetState(true, true);
                 }
-                ErrorMessage.AddMessage("in vehicle");
                 return false;
             }
             else
             {
-                ErrorMessage.AddMessage("not in vehicle");
                 return true;
             }
         }
@@ -239,12 +235,10 @@ namespace BuilderModuleInputFix
                     return true;
                 }
 
-                ErrorMessage.AddMessage("in vehicle");
                 return false;
             }
             else
             {
-                ErrorMessage.AddMessage("not in vehicle");
                 return true;
             }
         }
