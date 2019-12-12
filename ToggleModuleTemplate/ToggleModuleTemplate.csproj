@@ -51,7 +51,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="SMLHelper">
-      <HintPath>$(BelowZeroDir)\QMods\Modding Helper\SMLHelper.dll</HintPath>
+      <HintPath>$(BelowZeroDir)\QMods\SMLHelper_BZ\SMLHelper.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />

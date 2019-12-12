@@ -4,9 +4,8 @@ using SMLHelper.V2.Utility;
 using System.Collections.Generic;
 using UnityEngine;
 using SMLHelper.V2.Crafting;
-using System;
 
-namespace BuilderModule
+namespace ToggleModule
 {
     ///<summary>
     ///Based on Craftable Class from PrimeSonic/Upgraded Vehicles mod
@@ -78,8 +77,9 @@ namespace BuilderModule
             {
                 sprite = GetResourceIcon(PrefabTemplate);
             }
-            Console.WriteLine("NameID: "+ NameID + ", FriendlyName: "+ FriendlyName + ", Description: "+ Description);
-            TechType = TechTypeHandler.AddTechType(NameID, FriendlyName, Description, sprite, false);
+
+
+            TechType = TechTypeHandler.AddTechType(NameID, FriendlyName, Description, sprite , false);
             SpriteHandler.RegisterSprite(TechType, sprite);
             CraftDataHandler.SetTechData(TechType, GetRecipe());
             CraftTreeHandler.AddCraftingNode(FabricatorType, TechType, FabricatorTab);
@@ -100,11 +100,11 @@ namespace BuilderModule
         {
             if (GameResourceFileName == null)
             {                
-                _GameObject = UnityEngine.Object.Instantiate(CraftData.GetPrefabForTechType(PrefabTemplate));                             
+                _GameObject = Object.Instantiate(CraftData.GetPrefabForTechType(PrefabTemplate));                             
             }
             else
             {
-                _GameObject = UnityEngine.Object.Instantiate(Resources.Load<GameObject>(GameResourceFileName));
+                _GameObject = Object.Instantiate(Resources.Load<GameObject>(GameResourceFileName));
             }
 
             _GameObject.name = NameID;            
