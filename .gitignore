@@ -338,3 +338,12 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+# Assemblies
+Assembly-CSharp-firstpass.dll
+Assembly-CSharp-firstpass_publicized.dll
+Assembly-CSharp.dll
+Assembly-CSharp_publicized.dll
+
+# Build
+Qmods/
