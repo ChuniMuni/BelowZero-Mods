@@ -1,0 +1,12 @@
+{
+  "Id": "frigidpenguin.NoCrosshair",
+  "DisplayName": "NoCrosshair",
+  "Author": "frigidpenguin-MrPurple6411",
+  "Version": "1.0.1",
+  "Enable": true,
+  "Game":  "BelowZero",
+  "AssemblyName": "NoCrosshair.dll",
+  "EntryMethod": "frigidpenguin.Entry.Start",
+  "Config": {
+  }
+}
